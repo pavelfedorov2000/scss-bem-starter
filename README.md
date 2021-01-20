@@ -9,7 +9,7 @@ SCSS-BEM-GULP-starter:
   - browsersync
   - watching files
   - webp html
-SCSS:
+- SCSS:
   - nesting
   - @imports
   - $variables
