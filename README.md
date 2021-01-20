@@ -3,12 +3,14 @@ SCSS-BEM-GULP-starter:
   - src --> dist
   - @@includes
   - .scss --> .css --> .min.css
+  - autoprefixer (vendor prefixes)
   - htmlmin
   - js uglify
   - imagemin
   - browsersync
   - watching files
   - webp html
+  - group media (adding all @media at the end of styles)
 - SCSS:
   - nesting
   - @imports
