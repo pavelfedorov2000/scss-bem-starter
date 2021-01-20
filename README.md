@@ -16,3 +16,11 @@ SCSS-BEM-GULP-starter:
   - @imports
   - $variables
   - @mixins
+- BEM:
+  - .block__element--modificator
+  - /blocks
+    - modules
+      - header
+        - header.html
+        - header.scss
+        - header.js
