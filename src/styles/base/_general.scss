@@ -1,0 +1,11 @@
+.container {
+    max-width: 1200px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+
+@import '../components/buttons';
+@import '../components/titles';
+@import '../components/slick';
+@import '../components/checkbox';
+@import '../components/radio';
