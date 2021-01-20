@@ -19,7 +19,7 @@ SCSS-BEM-GULP-starter:
 - BEM:
   - .block__element--modificator
   - /blocks
-    - modules
+    - /modules
       - header
         - header.html
         - header.scss
