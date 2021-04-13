@@ -1,8 +1,0 @@
-.modal {
-    position: absolute;
-    @include centerXY;
-    @media(max-width: 575px) {
-        width: 100%;
-        height: 100vh;
-    }
-}

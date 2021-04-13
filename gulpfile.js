@@ -3,8 +3,6 @@
 let project_folder = "dist";
 let source_folder = "src";
 
-//let fs = require('fs');
-
 let path = {
     build: {
         html: project_folder + "/",
@@ -12,42 +10,39 @@ let path = {
         js: project_folder + "/js/",
         img: project_folder + "/img/",
         fonts: project_folder + "/fonts/",
-        libs: project_folder + "/libs/",
     },
     src: {
-        html: [source_folder + "/views/*.html", source_folder + "/views/pages/*.html", "!" + source_folder + "/views/_*.html"],
-        css: [source_folder + "/styles/style.scss", "!" + source_folder + "/blocks/modules/**/*.scss"],
+        html: source_folder,
+        css: [source_folder + "/scss/style.scss"],
         js: source_folder + "/js/script.js",
         img: source_folder + "/img/**/*.{jpg,png,svg,gif,ico,webp}",
-        libs: source_folder + "/libs/**/*",
+        fonts: source_folder + "/fonts/**/*",
     },
     watch: {
         html: source_folder + "/**/*.html",
         css: source_folder + "/**/*.scss",
         js: source_folder + "/js/**/*.js",
         img: source_folder + "/img/**/*.{jpg,png,svg,gif,ico,webp}",
-        libs: source_folder + "/libs/**/*",
+        fonts: source_folder + "/fonts/**/*",
     },
     clean: "./" + project_folder + "/"
 };
 
-let { src, dest} = require('gulp'),
-    gulp         = require('gulp'),
-    browsersync  = require('browser-sync').create(),
-    fileinclude  = require('gulp-file-include'),
-    del          = require('del'),
-    sass         = require('gulp-sass'),
+let { src, dest } = require('gulp'),
+    gulp = require('gulp'),
+    browsersync = require('browser-sync').create(),
+    fileinclude = require('gulp-file-include'),
+    del = require('del'),
+    sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
-    group_media  = require('gulp-group-css-media-queries'),
-    clean_css    = require('gulp-clean-css'),
-    rename       = require('gulp-rename'),
-    uglify       = require('gulp-uglify-es').default,
-    imagemin     = require('gulp-imagemin'),
-    webp         = require('gulp-webp'),
-    webphtml     = require('gulp-webp-html'),
-    //ttf2woff     = require('gulp-ttf2woff'),
-    //ttf2woff2    = require('gulp-ttf2woff2'),
-    htmlmin      = require('gulp-htmlmin');
+    group_media = require('gulp-group-css-media-queries'),
+    clean_css = require('gulp-clean-css'),
+    rename = require('gulp-rename'),
+    uglify = require('gulp-uglify-es').default,
+    imagemin = require('gulp-imagemin'),
+    webp = require('gulp-webp'),
+    webphtml = require('gulp-webp-html'),
+    htmlmin = require('gulp-htmlmin');
 
 function browserSync() {
     browsersync.init({
@@ -130,40 +125,9 @@ function images() {
         .pipe(browsersync.stream());
 }
 
-/* function fonts() {
-    src(path.src.fonts)
-        .pipe(ttf2woff())
-        .pipe(dest(path.build.fonts));
+function fonts() {
     return src(path.src.fonts)
-        .pipe(ttf2woff2())
         .pipe(dest(path.build.fonts));
-} */
-
-/* function fontsStyle() {
-    let file_content = fs.readFileSync(source_folder + '/sass/base/_fonts.scss');
-    if (file_content == '') {
-        fs.writeFile(source_folder + '/sass/base/_fonts.scss', '', cb);
-        return fs.readdir(path.build.fonts, function (err, items) {
-            if (items) {
-                let c_fontname;
-                for (var i = 0; i < items.length; i++) {
-                    let fontname = items[i].split('.');
-                    fontname = fontname[0];
-                    if (c_fontname != fontname) {
-                        fs.appendFile(source_folder + '/sass/base/_fonts.scss', '@include font("' + fontname + '", "' + fontname + '", "400", "normal");\r\n', cb);
-                    }
-                    c_fontname = fontname;
-                }
-            }
-        });
-    }
-} */
-
-//function cb() {}
-
-function libs() {
-    return src(path.src.libs)
-        .pipe(dest(path.build.libs));
 }
 
 function watchFiles() {
@@ -171,14 +135,14 @@ function watchFiles() {
     gulp.watch([path.watch.css], css);
     gulp.watch([path.watch.js], js);
     gulp.watch([path.watch.img], images);
-    gulp.watch([path.watch.libs], libs);
+    gulp.watch([path.watch.fonts], fonts);
 }
 
 function clean() {
     return del(path.clean);
 }
 
-let build = gulp.series(clean, gulp.parallel(html, css, js, images, libs));
+let build = gulp.series(clean, gulp.parallel(html, css, js, images, fonts));
 let watch = gulp.parallel(build, browserSync, watchFiles);
 
 
@@ -186,9 +150,7 @@ exports.html = html;
 exports.css = css;
 exports.js = js;
 exports.images = images;
-//exports.fonts = fonts;
-//exports.fontsStyle = fontsStyle;
-exports.libs = libs;
+exports.fonts = fonts;
 exports.build = build;
 exports.watch = watch;
 exports.default = watch;
