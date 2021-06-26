@@ -1,10 +1,75 @@
 // colors
-//$accent: ;
+$accent: #0d243c;
+$red: #ff0800;
+$blue: #1e90ff;
+$gray: #f2f2f2;
 //$dark: ;
 //$light: ;
 //$border: ;
-$container: 1140px;
+
+$container: 1440px;
 $gap: 15px;
 
-// fonts
-//$second-font: ;
+$roboto: 'Roboto', sans-serif;
+
+%text {
+    font-size: 18px;
+    line-height: 26px;
+}
+
+%flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+%vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+%flex-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+%flex-row-center {
+    @extend %flex-row;
+    align-items: center;
+}
+
+%flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+%flex-col-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+%flex-col-end {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+%pos-center-x {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+%pos-center-y {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+%pos-center-xy {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

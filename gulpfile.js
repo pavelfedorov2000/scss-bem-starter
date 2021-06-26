@@ -12,17 +12,19 @@ let path = {
         fonts: project_folder + "/fonts/",
     },
     src: {
-        html: source_folder,
-        css: [source_folder + "/scss/style.scss"],
-        js: source_folder + "/js/script.js",
-        img: source_folder + "/img/**/*.{jpg,png,svg,gif,ico,webp}",
+        html: source_folder + "/index.html",
+        css: source_folder + "/scss/style.scss",
+        js: source_folder + "/js/**/*.js",
+        img: [source_folder + "/img/**/*.{jpg,png,svg,gif,ico,webp}", "!" + source_folder + "/img/svg/*.svg"],
+        svg: source_folder + "/img/svg/*.svg",
         fonts: source_folder + "/fonts/**/*",
     },
     watch: {
-        html: source_folder + "/**/*.html",
+        html: source_folder + "/index.html",
         css: source_folder + "/**/*.scss",
         js: source_folder + "/js/**/*.js",
         img: source_folder + "/img/**/*.{jpg,png,svg,gif,ico,webp}",
+        svg: source_folder + "/img/svg/*.svg",
         fonts: source_folder + "/fonts/**/*",
     },
     clean: "./" + project_folder + "/"
@@ -40,6 +42,7 @@ let { src, dest } = require('gulp'),
     rename = require('gulp-rename'),
     uglify = require('gulp-uglify-es').default,
     imagemin = require('gulp-imagemin'),
+    svgSprite = require('gulp-svg-sprite'),
     webp = require('gulp-webp'),
     webphtml = require('gulp-webp-html'),
     htmlmin = require('gulp-htmlmin');
@@ -56,7 +59,7 @@ function browserSync() {
 
 function html() {
     return src(path.src.html)
-        .pipe(fileinclude())
+        //.pipe(fileinclude())
         .pipe(htmlmin({ collapseWhitespace: true }))
         .pipe(webphtml())
         .pipe(dest(path.build.html))
@@ -116,13 +119,25 @@ function images() {
         .pipe(
             imagemin({
                 progressive: true,
-                svgoPlugins: [{ removeViewBox: false }],
-                interPlaced: true,
+                //svgoPlugins: [{ removeViewBox: false }],
+                //interPlaced: true,
                 optimizationLevel: 3 // 0 to 7
             })
         )
         .pipe(dest(path.build.img))
         .pipe(browsersync.stream());
+}
+
+function svgSprites() {
+    return src(path.src.svg)
+        .pipe(svgSprite({
+            mode: {
+                stack: {
+                    sprite: '../sprite.svg'
+                }
+            }
+        }))
+        .pipe(dest(path.build.img));
 }
 
 function fonts() {
@@ -135,6 +150,7 @@ function watchFiles() {
     gulp.watch([path.watch.css], css);
     gulp.watch([path.watch.js], js);
     gulp.watch([path.watch.img], images);
+    gulp.watch([path.watch.svg], svgSprites);
     gulp.watch([path.watch.fonts], fonts);
 }
 
@@ -142,7 +158,7 @@ function clean() {
     return del(path.clean);
 }
 
-let build = gulp.series(clean, gulp.parallel(html, css, js, images, fonts));
+let build = gulp.series(clean, gulp.parallel(html, css, js, images, svgSprites, fonts));
 let watch = gulp.parallel(build, browserSync, watchFiles);
 
 
@@ -150,6 +166,7 @@ exports.html = html;
 exports.css = css;
 exports.js = js;
 exports.images = images;
+exports.svgSprites = svgSprites;
 exports.fonts = fonts;
 exports.build = build;
 exports.watch = watch;
